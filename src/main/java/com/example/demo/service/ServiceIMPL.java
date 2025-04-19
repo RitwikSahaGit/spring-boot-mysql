@@ -23,8 +23,8 @@ public class ServiceIMPL{
 	@Autowired
 	private employeeRepo repo; 
 	
-	//@Autowired
-	private EmployeeDto empdto = new EmployeeDto();
+	@Autowired
+	private EmployeeDto empdto; //;= new EmployeeDto();
 	
 	// getting the employee on the basis of id
 	public EmployeeDto getEmployeeById(int id){
@@ -52,14 +52,14 @@ public class ServiceIMPL{
 		List<EmployeeDto> empdtolist = new ArrayList<>();
 		
 		for (EmployeeEntity e:employeeList) {
-			EmployeeDto emp = new EmployeeDto();
-			emp.setId(e.getId());
+			EmployeeDto empdto = new EmployeeDto();
+			empdto.setId(e.getId());
 			System.out.println(e.getId());
-			emp.setName(e.getName());
+			empdto.setName(e.getName());
 			System.out.println(e.getName());
-			emp.setPhonenumber(e.getPhonenumber());
+			empdto.setPhonenumber(e.getPhonenumber());
 			System.out.println(e.getPhonenumber());
-			empdtolist.add(emp);
+			empdtolist.add(empdto);
 			System.out.println("Adding Employee to this DTO list");
 		}
 		//empdtolist.add(empdto);
@@ -94,7 +94,7 @@ public class ServiceIMPL{
 	public String deleteEmployee(int id){
 		Optional<EmployeeEntity> optional = repo.findById(id);
 		if(optional.isEmpty()) {
-			return " please enter a valid ID";	
+			return null;	
 		}
 		else {
 			repo.deleteById(id);

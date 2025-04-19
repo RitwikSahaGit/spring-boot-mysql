@@ -3,6 +3,9 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,28 +32,40 @@ public class ApiController {
 	}
 //	
 	@GetMapping("/employees")
-	public List<EmployeeDto> getEmployeeList() {
+	public ResponseEntity<List<EmployeeDto>> getEmployeeList() {
 		
-		return employeeService.getEmployeeList();
+		return new ResponseEntity<>(employeeService.getEmployeeList(), HttpStatus.OK);
 	}
 	
 	@GetMapping("/employees/{id}")
-	public EmployeeDto getEmployeeDetails(@PathVariable int id) {
+	//public EmployeeDto getEmployeeDetails(@PathVariable int id) 
+	public ResponseEntity<EmployeeDto> getEmployeeDetails(@PathVariable int id) 
+	{
 		
-		return employeeService.getEmployeeById(id);
+		EmployeeDto e =employeeService.getEmployeeById(id);
+		return new ResponseEntity<>(e, HttpStatus.FOUND);
 	}
 	
 	@PostMapping("/employees")
-	public String addEmployee(@RequestBody EmployeeDto employee) {
+	public ResponseEntity<String> addEmployee(@RequestBody EmployeeDto employee) {
 		
 		
-		return employeeService.addEmployee(employee);
+		return new ResponseEntity<> (employeeService.addEmployee(employee), HttpStatus.CREATED);
 	}
 //	
 	@DeleteMapping("/employees/{id}")
-	public String deleteEmployee(@PathVariable int id) {
+	public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
 		
-		return employeeService.deleteEmployee(id);
+		//return employeeService.deleteEmployee(id);
+		String str = employeeService.deleteEmployee(id);
+		System.out.println(str);
+		if(str==null) {
+			return new ResponseEntity<>("No record found", HttpStatus.NOT_FOUND );
+		}
+		else {
+			return new ResponseEntity<>("Deleted record", HttpStatus.OK );
+		}
+			
 	}
 //	
 //	@PutMapping("/employees")
