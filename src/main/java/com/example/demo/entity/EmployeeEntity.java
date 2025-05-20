@@ -3,6 +3,8 @@ package com.example.demo.entity;
 
 
 
+import org.springframework.boot.convert.DataSizeUnit;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +23,12 @@ public class EmployeeEntity {
 	private int id;
 	
 
-	@Column(name = "name")
+	@Column(length=20, name = "name")
 	private String name;
 	
-	@Column(name = "phonenumber")
-	private long phonenumber;
+	
+	@Column(length = 10, name = "phonenumber")
+	private String phonenumber;
 
 	public int getId() {
 		return id;
@@ -43,11 +46,11 @@ public class EmployeeEntity {
 		this.name = name;
 	}
 
-	public long getPhonenumber() {
+	public String getPhonenumber() {
 		return phonenumber;
 	}
 
-	public void setPhonenumber(long phonenumber) {
+	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
 

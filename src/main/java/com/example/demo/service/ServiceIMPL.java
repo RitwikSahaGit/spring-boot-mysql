@@ -40,10 +40,7 @@ public class ServiceIMPL{
 			System.out.println("No Record Found");
 			return null;
 		}
-		
-		
 		return empdto;
-		
 	}
 	
 	//getting all the employee from the DB
@@ -68,6 +65,13 @@ public class ServiceIMPL{
 	// inserting the employee in the Db
 	//post mapping
 	public String addEmployee(EmployeeDto emp) {
+		//checking the range of the phone number
+		if(emp.getPhonenumber().length()>10) {
+			return "Phone Number - More than 10 digits";
+		}
+		else if(emp.getPhonenumber().length()<10){
+			return "Phone Number - Less than 10 digits";
+		}
 		try {
 			Optional<EmployeeEntity> optional = repo.findById(emp.getId());
 			if(optional.isEmpty()) {

@@ -11,7 +11,7 @@ public class EmployeeDto {
 	
 	private String name;
 	
-	private long phonenumber;
+	private String phonenumber;
 
 	public int getId() {
 		return id;
@@ -29,11 +29,11 @@ public class EmployeeDto {
 		this.name = name;
 	}
 
-	public long getPhonenumber() {
+	public String getPhonenumber() {
 		return phonenumber;
 	}
 
-	public void setPhonenumber(long phonenumber) {
+	public void setPhonenumber(String phonenumber) {
 		this.phonenumber = phonenumber;
 	}
 
