@@ -116,15 +116,11 @@ public class ServiceIMPL{
 		Optional<EmployeeEntity> employeeEntity = repo.findById(id);
 		try {
 			if(employeeEntity.isPresent()) {
-//				String phonenumber = emp.getPhonenumber();
 				EmployeeEntity ee= employeeEntity.orElseThrow();
-				//ee.setName(employeeEntity.orElseThrow().getName());
 				System.out.println("Updating phone number...............");
 				ee.setPhonenumber(newNumber);
 				repo.save(ee);
-				
 				System.out.println("Phone number modified with new number "+ newNumber);
-				
 			}
 			else {
 				return "Employee is not present is DB";
