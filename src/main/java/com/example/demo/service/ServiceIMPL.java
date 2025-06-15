@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.EmployeeDto;
@@ -73,8 +74,10 @@ public class ServiceIMPL{
 			return "Phone Number - Less than 10 digits";
 		}
 		try {
-			Optional<EmployeeEntity> optional = repo.findById(emp.getId());
-			if(optional.isEmpty()) {
+			System.out.println("addEmployee -> try block");
+			EmployeeEntity employeeEntity = repo.findByPhonenumber(emp.getPhonenumber());
+			System.out.println(employeeEntity);
+			if(employeeEntity==null) {
 				EmployeeEntity employee = new EmployeeEntity();
 				//employee.setId(emp.getId());
 				employee.setName(emp.getName());
@@ -86,13 +89,54 @@ public class ServiceIMPL{
 			}
 			
 		}
+		catch(IncorrectResultSizeDataAccessException e) {
+			return "Employee already present in DB ";
+		}
 		catch(Exception e) {
+			e.printStackTrace();
 			return "Please enter proper data";
 		}
 			
 		return "Employee added successfully";	
 	}
 	
+	//Find By Name
+	public EmployeeDto findByName(String name) {
+		
+		EmployeeEntity employeeEntity = repo.findByName(name);
+		empdto.setId(employeeEntity.getId());
+		empdto.setName(employeeEntity.getName());
+		empdto.setPhonenumber(employeeEntity.getPhonenumber());
+		return empdto;
+		
+	}
+	
+	//Update Mobile number
+	public String updatePhoneNumber(int id, String newNumber) {
+		Optional<EmployeeEntity> employeeEntity = repo.findById(id);
+		try {
+			if(employeeEntity.isPresent()) {
+//				String phonenumber = emp.getPhonenumber();
+				EmployeeEntity ee= employeeEntity.orElseThrow();
+				//ee.setName(employeeEntity.orElseThrow().getName());
+				System.out.println("Updating phone number...............");
+				ee.setPhonenumber(newNumber);
+				repo.save(ee);
+				
+				System.out.println("Phone number modified with new number "+ newNumber);
+				
+			}
+			else {
+				return "Employee is not present is DB";
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "Some exception happened";
+		}
+		return "Phone number updated successfully";
+		
+	}
 	
 	//deleting any employee depending on the ID
 	public String deleteEmployee(int id){

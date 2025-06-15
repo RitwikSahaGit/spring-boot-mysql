@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,12 +9,14 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.PatchExchange;
 
 import com.example.demo.dto.EmployeeDto;
 //import com.example.demo.service.Service;
@@ -53,6 +56,19 @@ public class ApiController {
 		return new ResponseEntity<> (employeeService.addEmployee(employee), HttpStatus.CREATED);
 	}
 //	
+	
+	//find by employee name
+	@GetMapping("/employees/name/{name}")
+	public ResponseEntity<EmployeeDto> findByName(@PathVariable String name){
+		return new ResponseEntity<> (employeeService.findByName(name), HttpStatus.FOUND);
+		
+	}
+	
+	@PatchMapping("/employees/{id}")
+	public ResponseEntity<String> updatePhoneNumber(@PathVariable int id, @RequestBody String newNumber){
+		return new ResponseEntity<>(employeeService.updatePhoneNumber(id, newNumber), HttpStatus.ACCEPTED );
+	}
+	
 	@DeleteMapping("/employees/{id}")
 	public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
 		
